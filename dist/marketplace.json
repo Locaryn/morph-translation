@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "refreshUrl": "https://raw.githubusercontent.com/Locaryn/plugin-translation/main/dist/marketplace.json",
+  "owns": [
+    "nllb",
+    "opus-mt"
+  ],
+  "categories": [
+    {
+      "id": "translation",
+      "label": "Traduction",
+      "icon": "translate",
+      "matches": [
+        "translation"
+      ],
+      "requires": [
+        "translation"
+      ]
+    }
+  ],
+  "models": [
+    {
+      "id": "nllb-200-600m",
+      "name": "NLLB-200 600M",
+      "brand": "Meta AI",
+      "description": "Modèle de traduction automatique haute qualité couvrant plus de 200 langues.",
+      "license": "CC-BY-NC-4.0",
+      "releaseDate": "2022-07-06",
+      "releaseYear": 2022,
+      "capabilities": [
+        "translation"
+      ],
+      "variants": [
+        {
+          "size": "ONNX · 600M",
+          "params": 0.6,
+          "storageGb": 1.2,
+          "quants": [
+            "fp16"
+          ],
+          "tag": "https://huggingface.co/facebook/nllb-200-distilled-600M/resolve/main/model.onnx",
+          "downloads": []
+        }
+      ]
+    }
+  ]
+}

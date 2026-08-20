@@ -1,8 +1,8 @@
 ---
 name: machine-translation
-description: Translate text, docs, and code comments between French, English, and 100+ languages.
+description: Traduire du texte, des commentaires de code et de la documentation vers plus de 100 langues.
 ---
 
-# Translation Skill
+# Compétence Traduction
 
-Use `translate_text` when the user asks to translate text or documentation.
+Utilisez `translate_text` lorsque l'utilisateur demande une traduction linguistique de messages, documentation ou code.
