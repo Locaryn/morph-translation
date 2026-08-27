@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "translation": {
-      "command": "${LOCARYN_PLUGIN_ROOT}/bin/locaryn-translation-mcp",
+      "command": "${LOCARYN_MORPH_ROOT}/bin/locaryn-translation-mcp",
       "args": [],
       "env": {
         "RUST_LOG": "warn"
