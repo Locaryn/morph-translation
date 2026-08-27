@@ -1,4 +1,4 @@
-//! Stdio MCP server shipped by plugin-translation.
+//! Stdio MCP server shipped by morph-translation.
 use locaryn_plugin_translation::{translate_text, TranslationRequest};
 use serde_json::{json, Value};
 use std::io::Write;
@@ -29,7 +29,7 @@ async fn handle_request(request: Value) -> Value {
         "initialize" => success(id, json!({
             "protocolVersion": "2025-06-18",
             "capabilities": { "tools": {} },
-            "serverInfo": { "name": "plugin-translation", "version": VERSION }
+            "serverInfo": { "name": "morph-translation", "version": VERSION }
         })),
         "tools/list" => success(id, tools_list()),
         "tools/call" => {
