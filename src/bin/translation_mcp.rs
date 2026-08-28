@@ -65,13 +65,14 @@ fn tools_list() -> Value {
         "tools": [
             {
                 "name": "translate_text",
-                "description": "Traduit un texte ou du code source vers une langue cible.",
+                "description": "Traduit un texte par le moteur d'inference local, sans que le texte quitte la machine. Rend la traduction seule, sans preambule ni guillemets ajoutes. `source_was_guessed` dit si la langue de depart a ete devinee : dans ce cas elle est indicative, et le modele a reconnu la langue lui-meme.",
                 "inputSchema": {
                     "type": "object",
                     "properties": {
-                        "text": { "type": "string", "description": "Texte ou commentaire à traduire" },
-                        "source_lang": { "type": "string", "description": "Langue d'origine (optionnel, auto-détectée)" },
-                        "target_lang": { "type": "string", "description": "Langue cible (ex: fr, en, es, de, zh, ja)" }
+                        "text": { "type": "string", "description": "Texte a traduire" },
+                        "target_lang": { "type": "string", "description": "Langue d'arrivee, en code ISO ou en toutes lettres" },
+                        "source_lang": { "type": "string", "description": "Langue de depart. Omise : le modele la reconnait." },
+                        "model": { "type": "string", "description": "Modele, s'il doit differer du reglage." }
                     },
                     "required": ["text", "target_lang"]
                 }
