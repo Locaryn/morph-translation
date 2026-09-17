@@ -36,6 +36,14 @@
   border-radius: var(--radius-sm, 8px); font-weight: 700; font-size: 14px; cursor: pointer;
 }
 .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.error-card {
+  padding: 14px 16px; background: rgba(240, 100, 100, 0.08); border: 1px solid rgba(240, 100, 100, 0.25);
+  border-radius: var(--radius, 12px); color: #f08a8a; font-size: 13px; line-height: 1.5;
+}
+.result-card {
+  padding: 16px; background: var(--surface, rgba(255, 255, 255, 0.035)); border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+  border-radius: var(--radius, 12px); white-space: pre-wrap; font-size: 14px; line-height: 1.6;
+}
 `;
 
   class LocarynTranslationPanel extends HTMLElement {
@@ -46,6 +54,7 @@
       this.targetLang = "en";
       this.isTranslating = false;
       this.result = "";
+      this.error = null;
     }
     connectedCallback() { this.render(); }
 
@@ -53,20 +62,24 @@
       if (!this.text.trim() || this.isTranslating) return;
       this.isTranslating = true;
       this.render();
+      this.error = null;
       try {
         const bridge = window.locaryn || window.LocarynPluginAPI;
-        if (bridge && bridge.invokeExtensionTool) {
-          const res = await bridge.invokeExtensionTool("translate_text", {
-            text: this.text,
-            target_lang: this.targetLang
-          });
-          const parsed = typeof res === "string" ? JSON.parse(res) : res;
-          this.result = parsed.translated_text || this.text;
-        } else {
-          this.result = this.text;
+        if (!bridge || !bridge.invokeExtensionTool) {
+          throw new Error("Le pont d'extension n'est pas disponible dans ce contexte.");
         }
+        const res = await bridge.invokeExtensionTool("translate_text", {
+          text: this.text,
+          target_lang: this.targetLang
+        });
+        const parsed = typeof res === "string" ? JSON.parse(res) : res;
+        if (!parsed || typeof parsed.translated_text !== "string" || !parsed.translated_text.trim()) {
+          throw new Error("Le moteur n'a rien traduit.");
+        }
+        this.result = parsed.translated_text;
       } catch (err) {
-        alert("Erreur de traduction: " + err);
+        this.result = "";
+        this.error = err && err.message ? err.message : String(err);
       } finally {
         this.isTranslating = false;
         this.render();
@@ -82,7 +95,7 @@
               <div class="icon-box">🌐</div>
               <div>
                 <div class="title">Studio Traduction Multilingue</div>
-                <div class="subtitle">Traduction instantanée via NLLB-200 & Opus-MT</div>
+                <div class="subtitle">Traduction par le modèle de langage déjà en écoute sur cette machine</div>
               </div>
             </div>
             <div class="badge">Actif</div>
@@ -111,12 +124,14 @@
             ${this.isTranslating ? "Traduction en cours..." : "Traduire le texte"}
           </button>
 
+          ${this.error ? `
+            <div class="error-card">${this.error}</div>
+          ` : ""}
+
           ${this.result ? `
             <div class="field-card" style="margin-top: 10px;">
               <label class="label">Traduction (${this.targetLang.toUpperCase()})</label>
-              <div style="font-size: 14px; line-height: 1.5; color: var(--text); padding: 8px 0;">
-                ${this.result}
-              </div>
+              <div class="result-card">${this.result}</div>
             </div>
           ` : ""}
         </div>
