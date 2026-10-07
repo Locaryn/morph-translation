@@ -1,3 +1,3 @@
 # morph-translation
 
-Extension de traduction automatique pour Locaryn.
+Morph de traduction automatique pour Locaryn.
